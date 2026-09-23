@@ -1,0 +1,19 @@
+{
+  "privateOverlayPaths": [
+    ".lovable/",
+    "config/private/",
+    "docs/evidence/",
+    "docs/operations/",
+    "public/brand/private/"
+  ],
+  "allowedBinarySha256": {
+    "public/favicon.ico": "29a40d56580a5366083461297773dbf146ec043d1156f432f5472cb3487f506b",
+    "public/favicon.png": "2ec34dbd479d5fbc05427e0db50258d41589a31bfe72d27712bda6effaef0130",
+    "public/lovable-uploads/227f35f7-b905-464b-bba4-82edcb95f777.png": "6353c867e9fba36ef1f934b331c5152f2849b7d86f6cf13dae5c9217145e1210",
+    "public/lovable-uploads/hand-drawn-supplies-1.png": "73afbe130d16ef1dfad6941a9b639b5d57ce46ea862766806cc45b26cdfbffdf",
+    "public/lovable-uploads/hand-drawn-supplies-2.png": "ee898a903c1539eb83a6b7ba00aa7318821c9a4ce037afd742ac9822903a4a11",
+    "public/lovable-uploads/hand-drawn-supplies-3.png": "2002793e9511c9321940e93221b9ac7640f6576da4fad13f17ad7a655fa9e915",
+    "public/lovable-uploads/hand-drawn-supplies-4.png": "89bac98ab53e32a862b94396b3b810bf028787b9b4f72a67359ed1f39958f35c",
+    "public/og-image.png": "315b1db328f59576873fdcae5a248df807dc6b451e0cb5128e3e29ae78841583"
+  }
+}

@@ -1,1 +1,0 @@
-UPDATE public.communities SET name = 'Harrisonburg' WHERE id = 'b19b9f95-b2dc-4f28-8154-a21c2e6a1d40';

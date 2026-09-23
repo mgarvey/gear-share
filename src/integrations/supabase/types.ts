@@ -7,439 +7,331 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
-      books: {
+      communities: {
         Row: {
-          author: string | null
-          community_id: string
-          condition: string
           created_at: string
-          genre: string | null
-          house_rules: string[] | null
           id: string
-          lender_notes: string | null
-          lent_out: boolean | null
-          owner_id: string
-          title: string
+          join_mode: Database["public"]["Enums"]["community_join_mode"]
+          name: string
+          slug: string
           updated_at: string
         }
         Insert: {
-          author?: string | null
-          community_id: string
-          condition?: string
           created_at?: string
-          genre?: string | null
-          house_rules?: string[] | null
           id?: string
-          lender_notes?: string | null
-          lent_out?: boolean | null
-          owner_id: string
-          title: string
+          join_mode?: Database["public"]["Enums"]["community_join_mode"]
+          name: string
+          slug: string
           updated_at?: string
         }
         Update: {
-          author?: string | null
-          community_id?: string
-          condition?: string
           created_at?: string
-          genre?: string | null
-          house_rules?: string[] | null
           id?: string
-          lender_notes?: string | null
-          lent_out?: boolean | null
-          owner_id?: string
-          title?: string
+          join_mode?: Database["public"]["Enums"]["community_join_mode"]
+          name?: string
+          slug?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      community_roles: {
+        Row: {
+          community_id: string
+          granted_at: string
+          granted_by: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          community_id: string
+          granted_at?: string
+          granted_by?: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          community_id?: string
+          granted_at?: string
+          granted_by?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "books_community_id_fkey"
+            foreignKeyName: "community_roles_community_id_fkey"
             columns: ["community_id"]
             isOneToOne: false
             referencedRelation: "communities"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "books_owner_id_fkey"
-            columns: ["owner_id"]
+            foreignKeyName: "community_roles_member_same_community_fkey"
+            columns: ["community_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["community_id", "id"]
+          },
+          {
+            foreignKeyName: "community_roles_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
       }
-      city_centroids: {
+      founding_steward_bootstrap: {
         Row: {
-          city_display: string
-          city_normalized: string
-          id: string
-          latitude: number
-          longitude: number
-          state_code: string
-        }
-        Insert: {
-          city_display: string
-          city_normalized: string
-          id?: string
-          latitude: number
-          longitude: number
-          state_code: string
-        }
-        Update: {
-          city_display?: string
-          city_normalized?: string
-          id?: string
-          latitude?: number
-          longitude?: number
-          state_code?: string
-        }
-        Relationships: []
-      }
-      communities: {
-        Row: {
-          ai_features_enabled: boolean
-          coarse_latitude: number | null
-          coarse_longitude: number | null
-          country_code: string | null
-          created_at: string
-          custom_join_question: string | null
-          description: string | null
-          discoverable: boolean
-          id: string
-          intl_label: string | null
-          join_mode: string
-          latitude: number | null
-          longitude: number | null
-          name: string
-          public_location_label: string | null
-          slug: string
-          updated_at: string
-          zip_code: string | null
-        }
-        Insert: {
-          ai_features_enabled?: boolean
-          coarse_latitude?: number | null
-          coarse_longitude?: number | null
-          country_code?: string | null
-          created_at?: string
-          custom_join_question?: string | null
-          description?: string | null
-          discoverable?: boolean
-          id?: string
-          intl_label?: string | null
-          join_mode?: string
-          latitude?: number | null
-          longitude?: number | null
-          name: string
-          public_location_label?: string | null
-          slug: string
-          updated_at?: string
-          zip_code?: string | null
-        }
-        Update: {
-          ai_features_enabled?: boolean
-          coarse_latitude?: number | null
-          coarse_longitude?: number | null
-          country_code?: string | null
-          created_at?: string
-          custom_join_question?: string | null
-          description?: string | null
-          discoverable?: boolean
-          id?: string
-          intl_label?: string | null
-          join_mode?: string
-          latitude?: number | null
-          longitude?: number | null
-          name?: string
-          public_location_label?: string | null
-          slug?: string
-          updated_at?: string
-          zip_code?: string | null
-        }
-        Relationships: []
-      }
-      community_neighbors: {
-        Row: {
-          created_at: string | null
-          enabled: boolean | null
-          federation_key: string
-          id: string
-          join_url: string
-          name: string
-          search_endpoint: string
-          slug: string
-        }
-        Insert: {
-          created_at?: string | null
-          enabled?: boolean | null
-          federation_key: string
-          id?: string
-          join_url: string
-          name: string
-          search_endpoint: string
-          slug: string
-        }
-        Update: {
-          created_at?: string | null
-          enabled?: boolean | null
-          federation_key?: string
-          id?: string
-          join_url?: string
-          name?: string
-          search_endpoint?: string
-          slug?: string
-        }
-        Relationships: []
-      }
-      community_steward_requests: {
-        Row: {
-          co_stewards: Json | null
-          community_name: string | null
-          community_slug: string | null
-          created_at: string
-          email: string
-          id: string
-          location: string | null
-          name: string
-          questions: string | null
+          bootstrapped_at: string
+          community_id: string
+          operator_identifier: string
           reason: string
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: string
+          user_id: string
         }
         Insert: {
-          co_stewards?: Json | null
-          community_name?: string | null
-          community_slug?: string | null
-          created_at?: string
-          email: string
-          id?: string
-          location?: string | null
-          name: string
-          questions?: string | null
+          bootstrapped_at?: string
+          community_id: string
+          operator_identifier: string
           reason: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string
+          user_id: string
         }
         Update: {
-          co_stewards?: Json | null
-          community_name?: string | null
-          community_slug?: string | null
-          created_at?: string
-          email?: string
-          id?: string
-          location?: string | null
-          name?: string
-          questions?: string | null
+          bootstrapped_at?: string
+          community_id?: string
+          operator_identifier?: string
           reason?: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "founding_steward_bootstrap_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: true
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      item_requests: {
+      gear_loans: {
         Row: {
-          category: string | null
+          borrower_id: string
+          borrower_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          checked_out_at: string | null
+          checked_out_by: string | null
           community_id: string
           created_at: string
-          fulfilled_at: string | null
-          fulfilled_by: string | null
-          fulfilled_supply_id: string | null
+          custodian_at_request_id: string
+          decided_at: string | null
+          decided_by: string | null
+          end_date: string
           id: string
-          note: string | null
-          requester_id: string
-          status: string
-          title: string
+          quantity: number
+          returned_at: string | null
+          returned_by: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["gear_loan_status"]
+          supply_id: string
           updated_at: string
         }
         Insert: {
-          category?: string | null
+          borrower_id: string
+          borrower_note?: string | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          checked_out_at?: string | null
+          checked_out_by?: string | null
           community_id: string
           created_at?: string
-          fulfilled_at?: string | null
-          fulfilled_by?: string | null
-          fulfilled_supply_id?: string | null
+          custodian_at_request_id: string
+          decided_at?: string | null
+          decided_by?: string | null
+          end_date: string
           id?: string
-          note?: string | null
-          requester_id: string
-          status?: string
-          title: string
+          quantity: number
+          returned_at?: string | null
+          returned_by?: string | null
+          start_date: string
+          status?: Database["public"]["Enums"]["gear_loan_status"]
+          supply_id: string
           updated_at?: string
         }
         Update: {
-          category?: string | null
+          borrower_id?: string
+          borrower_note?: string | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          checked_out_at?: string | null
+          checked_out_by?: string | null
           community_id?: string
           created_at?: string
-          fulfilled_at?: string | null
-          fulfilled_by?: string | null
-          fulfilled_supply_id?: string | null
+          custodian_at_request_id?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          end_date?: string
           id?: string
-          note?: string | null
-          requester_id?: string
-          status?: string
-          title?: string
+          quantity?: number
+          returned_at?: string | null
+          returned_by?: string | null
+          start_date?: string
+          status?: Database["public"]["Enums"]["gear_loan_status"]
+          supply_id?: string
           updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "item_requests_community_id_fkey"
+            foreignKeyName: "gear_loans_borrower_id_fkey"
+            columns: ["borrower_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gear_loans_borrower_same_community_fkey"
+            columns: ["community_id", "borrower_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["community_id", "id"]
+          },
+          {
+            foreignKeyName: "gear_loans_community_id_fkey"
             columns: ["community_id"]
             isOneToOne: false
             referencedRelation: "communities"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "item_requests_fulfilled_by_fkey"
-            columns: ["fulfilled_by"]
+            foreignKeyName: "gear_loans_custodian_at_request_id_fkey"
+            columns: ["custodian_at_request_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "item_requests_fulfilled_supply_id_fkey"
-            columns: ["fulfilled_supply_id"]
+            foreignKeyName: "gear_loans_request_custodian_same_community_fkey"
+            columns: ["community_id", "custodian_at_request_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["community_id", "id"]
+          },
+          {
+            foreignKeyName: "gear_loans_supply_id_fkey"
+            columns: ["supply_id"]
             isOneToOne: false
             referencedRelation: "supplies"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "item_requests_requester_id_fkey"
-            columns: ["requester_id"]
+            foreignKeyName: "gear_loans_supply_same_community_fkey"
+            columns: ["community_id", "supply_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            referencedRelation: "supplies"
+            referencedColumns: ["community_id", "id"]
           },
         ]
       }
-      join_requests: {
+      member_postal_codes: {
         Row: {
           community_id: string
-          connection_context: string | null
-          cross_streets: string | null
-          custom_answer: string | null
-          email: string
-          id: string
-          intro: string | null
-          name: string
-          phone_number: string | null
-          referral_source: string | null
-          requested_at: string
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: Database["public"]["Enums"]["join_request_status"]
-          user_id: string | null
-          voucher_id: string | null
+          postal_code: string
+          profile_id: string
+          updated_at: string
         }
         Insert: {
           community_id: string
-          connection_context?: string | null
-          cross_streets?: string | null
-          custom_answer?: string | null
-          email: string
-          id?: string
-          intro?: string | null
-          name: string
-          phone_number?: string | null
-          referral_source?: string | null
-          requested_at?: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: Database["public"]["Enums"]["join_request_status"]
-          user_id?: string | null
-          voucher_id?: string | null
+          postal_code: string
+          profile_id: string
+          updated_at?: string
         }
         Update: {
           community_id?: string
-          connection_context?: string | null
-          cross_streets?: string | null
-          custom_answer?: string | null
-          email?: string
-          id?: string
-          intro?: string | null
-          name?: string
-          phone_number?: string | null
-          referral_source?: string | null
-          requested_at?: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: Database["public"]["Enums"]["join_request_status"]
-          user_id?: string | null
-          voucher_id?: string | null
+          postal_code?: string
+          profile_id?: string
+          updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "join_requests_community_id_fkey"
-            columns: ["community_id"]
-            isOneToOne: false
-            referencedRelation: "communities"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "join_requests_reviewed_by_fkey"
-            columns: ["reviewed_by"]
-            isOneToOne: false
+            foreignKeyName: "member_postal_profile_same_community_fkey"
+            columns: ["community_id", "profile_id"]
+            isOneToOne: true
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "join_requests_voucher_id_fkey"
-            columns: ["voucher_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            referencedColumns: ["community_id", "id"]
           },
         ]
       }
       profiles: {
         Row: {
+          approved_at: string | null
+          approved_by: string | null
           community_id: string
           created_at: string
-          email: string
+          deactivated_at: string | null
+          deactivated_by: string | null
+          display_name: string
           id: string
-          intro_text: string | null
           membership_status: Database["public"]["Enums"]["membership_status"]
-          name: string
-          role: Database["public"]["Enums"]["user_role"]
+          rejected_at: string | null
+          rejected_by: string | null
           updated_at: string
-          vouched_at: string | null
-          vouched_by: string | null
-          zip_code: string | null
         }
         Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
           community_id: string
           created_at?: string
-          email: string
+          deactivated_at?: string | null
+          deactivated_by?: string | null
+          display_name: string
           id: string
-          intro_text?: string | null
           membership_status?: Database["public"]["Enums"]["membership_status"]
-          name: string
-          role?: Database["public"]["Enums"]["user_role"]
+          rejected_at?: string | null
+          rejected_by?: string | null
           updated_at?: string
-          vouched_at?: string | null
-          vouched_by?: string | null
-          zip_code?: string | null
         }
         Update: {
+          approved_at?: string | null
+          approved_by?: string | null
           community_id?: string
           created_at?: string
-          email?: string
+          deactivated_at?: string | null
+          deactivated_by?: string | null
+          display_name?: string
           id?: string
-          intro_text?: string | null
           membership_status?: Database["public"]["Enums"]["membership_status"]
-          name?: string
-          role?: Database["public"]["Enums"]["user_role"]
+          rejected_at?: string | null
+          rejected_by?: string | null
           updated_at?: string
-          vouched_at?: string | null
-          vouched_by?: string | null
-          zip_code?: string | null
         }
         Relationships: [
           {
@@ -449,105 +341,106 @@ export type Database = {
             referencedRelation: "communities"
             referencedColumns: ["id"]
           },
+        ]
+      }
+      role_audit: {
+        Row: {
+          action: string
+          actor_user_id: string | null
+          community_id: string
+          id: number
+          occurred_at: string
+          operator_identifier: string | null
+          reason: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
+        }
+        Insert: {
+          action: string
+          actor_user_id?: string | null
+          community_id: string
+          id?: never
+          occurred_at?: string
+          operator_identifier?: string | null
+          reason?: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string | null
+          community_id?: string
+          id?: never
+          occurred_at?: string
+          operator_identifier?: string | null
+          reason?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          target_user_id?: string
+        }
+        Relationships: [
           {
-            foreignKeyName: "profiles_vouched_by_fkey"
-            columns: ["vouched_by"]
+            foreignKeyName: "role_audit_community_id_fkey"
+            columns: ["community_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "communities"
             referencedColumns: ["id"]
           },
         ]
       }
-      site_config: {
-        Row: {
-          key: string
-          updated_at: string | null
-          value: Json
-        }
-        Insert: {
-          key: string
-          updated_at?: string | null
-          value: Json
-        }
-        Update: {
-          key?: string
-          updated_at?: string | null
-          value?: Json
-        }
-        Relationships: []
-      }
       supplies: {
         Row: {
-          category: string
+          category: string | null
           community_id: string
-          condition: string
-          contact_email: string | null
+          condition: string | null
           created_at: string
-          cross_streets: string | null
-          date_available: string | null
+          created_by: string
+          custodian_id: string
           description: string
-          house_rules: string[] | null
           id: string
-          illustration_url: string | null
-          image_url: string | null
-          images: string[] | null
-          lender_notes: string | null
-          lent_out: boolean | null
-          location: string | null
-          name: string
-          neighborhood: string | null
-          owner_id: string
-          party_types: string[] | null
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at: string | null
+          title: string
           updated_at: string
-          zip_code: string | null
         }
         Insert: {
-          category: string
+          category?: string | null
           community_id: string
-          condition: string
-          contact_email?: string | null
+          condition?: string | null
           created_at?: string
-          cross_streets?: string | null
-          date_available?: string | null
-          description: string
-          house_rules?: string[] | null
+          created_by: string
+          custodian_id: string
+          description?: string
           id?: string
-          illustration_url?: string | null
-          image_url?: string | null
-          images?: string[] | null
-          lender_notes?: string | null
-          lent_out?: boolean | null
-          location?: string | null
-          name: string
-          neighborhood?: string | null
-          owner_id: string
-          party_types?: string[] | null
+          image_paths?: string[]
+          listing_status?: Database["public"]["Enums"]["listing_status"]
+          owner_id?: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at?: string | null
+          title: string
           updated_at?: string
-          zip_code?: string | null
         }
         Update: {
-          category?: string
+          category?: string | null
           community_id?: string
-          condition?: string
-          contact_email?: string | null
+          condition?: string | null
           created_at?: string
-          cross_streets?: string | null
-          date_available?: string | null
+          created_by?: string
+          custodian_id?: string
           description?: string
-          house_rules?: string[] | null
           id?: string
-          illustration_url?: string | null
-          image_url?: string | null
-          images?: string[] | null
-          lender_notes?: string | null
-          lent_out?: boolean | null
-          location?: string | null
-          name?: string
-          neighborhood?: string | null
-          owner_id?: string
-          party_types?: string[] | null
+          image_paths?: string[]
+          listing_status?: Database["public"]["Enums"]["listing_status"]
+          owner_id?: string | null
+          ownership_kind?: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total?: number
+          retired_at?: string | null
+          title?: string
           updated_at?: string
-          zip_code?: string | null
         }
         Relationships: [
           {
@@ -558,95 +451,1121 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "supplies_custodian_id_fkey"
+            columns: ["custodian_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supplies_custodian_same_community_fkey"
+            columns: ["community_id", "custodian_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["community_id", "id"]
+          },
+          {
             foreignKeyName: "supplies_owner_id_fkey"
             columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "supplies_owner_same_community_fkey"
+            columns: ["community_id", "owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["community_id", "id"]
+          },
         ]
       }
-      supply_requests: {
+      supply_condition_history: {
         Row: {
+          changed_at: string
+          changed_by: string
           community_id: string
-          created_at: string
-          id: string
-          message: string
-          sender_contact: string
-          sender_name: string
-          status: string
+          id: number
+          next_condition: string
+          prior_condition: string | null
           supply_id: string
-          supply_name: string
-          supply_owner_id: string
-          updated_at: string
         }
         Insert: {
+          changed_at?: string
+          changed_by: string
           community_id: string
-          created_at?: string
-          id?: string
-          message: string
-          sender_contact: string
-          sender_name: string
-          status?: string
+          id?: never
+          next_condition: string
+          prior_condition?: string | null
           supply_id: string
-          supply_name: string
-          supply_owner_id: string
-          updated_at?: string
         }
         Update: {
+          changed_at?: string
+          changed_by?: string
           community_id?: string
-          created_at?: string
-          id?: string
-          message?: string
-          sender_contact?: string
-          sender_name?: string
-          status?: string
+          id?: never
+          next_condition?: string
+          prior_condition?: string | null
           supply_id?: string
-          supply_name?: string
-          supply_owner_id?: string
-          updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "supply_requests_community_id_fkey"
+            foreignKeyName: "supply_condition_supply_same_community_fkey"
+            columns: ["community_id", "supply_id"]
+            isOneToOne: false
+            referencedRelation: "supplies"
+            referencedColumns: ["community_id", "id"]
+          },
+        ]
+      }
+      supply_donation_audit: {
+        Row: {
+          community_id: string
+          converted_at: string
+          converted_by: string
+          prior_owner_id: string
+          supply_id: string
+        }
+        Insert: {
+          community_id: string
+          converted_at?: string
+          converted_by: string
+          prior_owner_id: string
+          supply_id: string
+        }
+        Update: {
+          community_id?: string
+          converted_at?: string
+          converted_by?: string
+          prior_owner_id?: string
+          supply_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supply_donation_audit_community_id_fkey"
             columns: ["community_id"]
             isOneToOne: false
             referencedRelation: "communities"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "supply_donation_audit_supply_id_fkey"
+            columns: ["supply_id"]
+            isOneToOne: true
+            referencedRelation: "supplies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supply_donation_supply_same_community_fkey"
+            columns: ["community_id", "supply_id"]
+            isOneToOne: false
+            referencedRelation: "supplies"
+            referencedColumns: ["community_id", "id"]
+          },
         ]
       }
-      user_roles: {
-        Row: {
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      approve_gear_loan: {
+        Args: { target_loan_id: string }
+        Returns: {
+          borrower_id: string
+          borrower_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          checked_out_at: string | null
+          checked_out_by: string | null
           community_id: string
           created_at: string
+          custodian_at_request_id: string
+          decided_at: string | null
+          decided_by: string | null
+          end_date: string
           id: string
-          promoted_by: string | null
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
+          quantity: number
+          returned_at: string | null
+          returned_by: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["gear_loan_status"]
+          supply_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "gear_loans"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      available_quantity: {
+        Args: {
+          range_end: string
+          range_start: string
+          target_supply_id: string
+        }
+        Returns: number
+      }
+      bootstrap_founding_steward: {
+        Args: {
+          supplied_operator_identifier: string
+          supplied_reason: string
+          target_user_id: string
+        }
+        Returns: undefined
+      }
+      can_manage_gear_object: {
+        Args: { object_name: string }
+        Returns: boolean
+      }
+      can_view_gear_object: { Args: { object_name: string }; Returns: boolean }
+      cancel_gear_loan: {
+        Args: { supplied_reason?: string; target_loan_id: string }
+        Returns: {
+          borrower_id: string
+          borrower_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          checked_out_at: string | null
+          checked_out_by: string | null
+          community_id: string
+          created_at: string
+          custodian_at_request_id: string
+          decided_at: string | null
+          decided_by: string | null
+          end_date: string
+          id: string
+          quantity: number
+          returned_at: string | null
+          returned_by: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["gear_loan_status"]
+          supply_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "gear_loans"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      checkout_gear_loan: {
+        Args: { target_loan_id: string }
+        Returns: {
+          borrower_id: string
+          borrower_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          checked_out_at: string | null
+          checked_out_by: string | null
+          community_id: string
+          created_at: string
+          custodian_at_request_id: string
+          decided_at: string | null
+          decided_by: string | null
+          end_date: string
+          id: string
+          quantity: number
+          returned_at: string | null
+          returned_by: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["gear_loan_status"]
+          supply_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "gear_loans"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      convert_individual_donation: {
+        Args: { new_custodian_id: string; target_supply_id: string }
+        Returns: {
+          category: string | null
+          community_id: string
+          condition: string | null
+          created_at: string
+          created_by: string
+          custodian_id: string
+          description: string
+          id: string
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "supplies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      create_group_supply: {
+        Args: {
+          supplied_category: string
+          supplied_condition: string
+          supplied_custodian_id: string
+          supplied_description: string
+          supplied_quantity: number
+          supplied_status: Database["public"]["Enums"]["listing_status"]
+          supplied_title: string
+        }
+        Returns: {
+          category: string | null
+          community_id: string
+          condition: string | null
+          created_at: string
+          created_by: string
+          custodian_id: string
+          description: string
+          id: string
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "supplies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      create_individual_supply: {
+        Args: {
+          supplied_category: string
+          supplied_condition: string
+          supplied_description: string
+          supplied_quantity: number
+          supplied_status: Database["public"]["Enums"]["listing_status"]
+          supplied_title: string
+        }
+        Returns: {
+          category: string | null
+          community_id: string
+          condition: string | null
+          created_at: string
+          created_by: string
+          custodian_id: string
+          description: string
+          id: string
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "supplies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      current_access_level: {
+        Args: { target_community_id: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
+      current_active_community_id: { Args: never; Returns: string }
+      deactivate_member: {
+        Args: { successor_user_id: string; target_user_id: string }
+        Returns: undefined
+      }
+      deactivation_impact: {
+        Args: { successor_user_id: string; target_user_id: string }
+        Returns: {
+          affected_listings: number
+          checked_out_loans: number
+          requests_to_cancel: number
+        }[]
+      }
+      decide_membership: {
+        Args: { approve: boolean; target_user_id: string }
+        Returns: undefined
+      }
+      decline_gear_loan: {
+        Args: { target_loan_id: string }
+        Returns: {
+          borrower_id: string
+          borrower_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          checked_out_at: string | null
+          checked_out_by: string | null
+          community_id: string
+          created_at: string
+          custodian_at_request_id: string
+          decided_at: string | null
+          decided_by: string | null
+          end_date: string
+          id: string
+          quantity: number
+          returned_at: string | null
+          returned_by: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["gear_loan_status"]
+          supply_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "gear_loans"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      get_my_postal_code: { Args: never; Returns: string }
+      is_active_administrator: {
+        Args: { target_community_id: string }
+        Returns: boolean
+      }
+      is_active_custodian: {
+        Args: { target_community_id: string }
+        Returns: boolean
+      }
+      is_active_inventory_manager: {
+        Args: { target_community_id: string }
+        Returns: boolean
+      }
+      is_active_member: {
+        Args: { target_community_id: string }
+        Returns: boolean
+      }
+      is_active_steward: {
+        Args: { target_community_id: string }
+        Returns: boolean
+      }
+      is_canonical_gear_category: { Args: { value: string }; Returns: boolean }
+      is_canonical_gear_condition: { Args: { value: string }; Returns: boolean }
+      loan_manager_authorized: {
+        Args: {
+          item: Database["public"]["Tables"]["supplies"]["Row"]
+          operation: string
+        }
+        Returns: boolean
+      }
+      lock_community_authorization: {
+        Args: { exclusive_lock?: boolean; target_community_id: string }
+        Returns: undefined
+      }
+      lock_listing: { Args: { target_supply_id: string }; Returns: undefined }
+      max_committed_quantity: {
+        Args: {
+          excluded_loan_id?: string
+          range_end: string
+          range_start: string
+          target_supply_id: string
+        }
+        Returns: number
+      }
+      normalize_postal_code: { Args: { value: string }; Returns: string }
+      private_gear_catalog: {
+        Args: {
+          supplied_available_only: boolean
+          supplied_category: string
+          supplied_condition: string
+          supplied_end: string | null
+          supplied_ownership: string
+          supplied_page: number
+          supplied_postal: string
+          supplied_search: string
+          supplied_start: string | null
+        }
+        Returns: {
+          available_quantity: number | null
+          category: string
+          community_id: string
+          condition: string
+          custodian_id: string
+          custodian_name: string
+          custodian_postal_code: string
+          description: string
+          id: string
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string
+          owner_is_active: boolean
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          resolved_page: number
+          title: string
+          total_count: number
+        }[]
+      }
+      private_listing_postal_code: {
+        Args: { target_supply_id: string }
+        Returns: string
+      }
+      reassign_group_custodian: {
+        Args: { new_custodian_id: string; target_supply_id: string }
+        Returns: {
+          category: string | null
+          community_id: string
+          condition: string | null
+          created_at: string
+          created_by: string
+          custodian_id: string
+          description: string
+          id: string
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "supplies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      request_gear_loan: {
+        Args: {
+          requested_end: string
+          requested_quantity: number
+          requested_start: string
+          supplied_note?: string
+          target_supply_id: string
+        }
+        Returns: {
+          borrower_id: string
+          borrower_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          checked_out_at: string | null
+          checked_out_by: string | null
+          community_id: string
+          created_at: string
+          custodian_at_request_id: string
+          decided_at: string | null
+          decided_by: string | null
+          end_date: string
+          id: string
+          quantity: number
+          returned_at: string | null
+          returned_by: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["gear_loan_status"]
+          supply_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "gear_loans"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      retire_supply: {
+        Args: { target_supply_id: string }
+        Returns: {
+          category: string | null
+          community_id: string
+          condition: string | null
+          created_at: string
+          created_by: string
+          custodian_id: string
+          description: string
+          id: string
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "supplies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      return_gear_loan: {
+        Args: { target_loan_id: string }
+        Returns: {
+          borrower_id: string
+          borrower_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          checked_out_at: string | null
+          checked_out_by: string | null
+          community_id: string
+          created_at: string
+          custodian_at_request_id: string
+          decided_at: string | null
+          decided_by: string | null
+          end_date: string
+          id: string
+          quantity: number
+          returned_at: string | null
+          returned_by: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["gear_loan_status"]
+          supply_id: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "gear_loans"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      set_access_level: {
+        Args: {
+          target_role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
+        }
+        Returns: undefined
+      }
+      set_my_postal_code: { Args: { supplied_postal: string }; Returns: string }
+      set_steward: {
+        Args: { make_steward: boolean; target_user_id: string }
+        Returns: undefined
+      }
+      set_supply_contact: {
+        Args: { new_contact_id: string; target_supply_id: string }
+        Returns: {
+          category: string | null
+          community_id: string
+          condition: string | null
+          created_at: string
+          created_by: string
+          custodian_id: string
+          description: string
+          id: string
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "supplies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      set_supply_image_paths: {
+        Args: { supplied_paths: string[]; target_supply_id: string }
+        Returns: {
+          category: string | null
+          community_id: string
+          condition: string | null
+          created_at: string
+          created_by: string
+          custodian_id: string
+          description: string
+          id: string
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "supplies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      update_supply: {
+        Args: {
+          supplied_category: string
+          supplied_condition: string
+          supplied_description: string
+          supplied_quantity: number
+          supplied_status: Database["public"]["Enums"]["listing_status"]
+          supplied_title: string
+          target_supply_id: string
+        }
+        Returns: {
+          category: string | null
+          community_id: string
+          condition: string | null
+          created_at: string
+          created_by: string
+          custodian_id: string
+          description: string
+          id: string
+          image_paths: string[]
+          listing_status: Database["public"]["Enums"]["listing_status"]
+          owner_id: string | null
+          ownership_kind: Database["public"]["Enums"]["ownership_kind"]
+          quantity_total: number
+          retired_at: string | null
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "supplies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+    }
+    Enums: {
+      app_role: "member" | "steward" | "custodian"
+      community_join_mode: "approval_required"
+      gear_loan_status:
+        | "pending"
+        | "approved"
+        | "checked_out"
+        | "returned"
+        | "declined"
+        | "cancelled"
+      listing_status: "listed" | "unlisted" | "retired"
+      membership_status: "pending" | "active" | "rejected" | "deactivated"
+      ownership_kind: "individual" | "group"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+  storage: {
+    Tables: {
+      buckets: {
+        Row: {
+          allowed_mime_types: string[] | null
+          avif_autodetection: boolean | null
+          created_at: string | null
+          file_size_limit: number | null
+          id: string
+          name: string
+          owner: string | null
+          owner_id: string | null
+          public: boolean | null
+          type: Database["storage"]["Enums"]["buckettype"]
+          updated_at: string | null
         }
         Insert: {
-          community_id: string
-          created_at?: string
-          id?: string
-          promoted_by?: string | null
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id: string
+          allowed_mime_types?: string[] | null
+          avif_autodetection?: boolean | null
+          created_at?: string | null
+          file_size_limit?: number | null
+          id: string
+          name: string
+          owner?: string | null
+          owner_id?: string | null
+          public?: boolean | null
+          type?: Database["storage"]["Enums"]["buckettype"]
+          updated_at?: string | null
         }
         Update: {
-          community_id?: string
+          allowed_mime_types?: string[] | null
+          avif_autodetection?: boolean | null
+          created_at?: string | null
+          file_size_limit?: number | null
+          id?: string
+          name?: string
+          owner?: string | null
+          owner_id?: string | null
+          public?: boolean | null
+          type?: Database["storage"]["Enums"]["buckettype"]
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      buckets_analytics: {
+        Row: {
+          created_at: string
+          deleted_at: string | null
+          format: string
+          id: string
+          name: string
+          type: Database["storage"]["Enums"]["buckettype"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deleted_at?: string | null
+          format?: string
+          id?: string
+          name: string
+          type?: Database["storage"]["Enums"]["buckettype"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deleted_at?: string | null
+          format?: string
+          id?: string
+          name?: string
+          type?: Database["storage"]["Enums"]["buckettype"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      buckets_vectors: {
+        Row: {
+          created_at: string
+          id: string
+          type: Database["storage"]["Enums"]["buckettype"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          type?: Database["storage"]["Enums"]["buckettype"]
+          updated_at?: string
+        }
+        Update: {
           created_at?: string
           id?: string
-          promoted_by?: string | null
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
+          type?: Database["storage"]["Enums"]["buckettype"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      iceberg_namespaces: {
+        Row: {
+          bucket_name: string
+          catalog_id: string
+          created_at: string
+          id: string
+          metadata: Json
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          bucket_name: string
+          catalog_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          bucket_name?: string
+          catalog_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          name?: string
+          updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "user_roles_community_id_fkey"
-            columns: ["community_id"]
+            foreignKeyName: "iceberg_namespaces_catalog_id_fkey"
+            columns: ["catalog_id"]
             isOneToOne: false
-            referencedRelation: "communities"
+            referencedRelation: "buckets_analytics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      iceberg_tables: {
+        Row: {
+          bucket_name: string
+          catalog_id: string
+          created_at: string
+          id: string
+          location: string
+          name: string
+          namespace_id: string
+          remote_table_id: string | null
+          shard_id: string | null
+          shard_key: string | null
+          updated_at: string
+        }
+        Insert: {
+          bucket_name: string
+          catalog_id: string
+          created_at?: string
+          id?: string
+          location: string
+          name: string
+          namespace_id: string
+          remote_table_id?: string | null
+          shard_id?: string | null
+          shard_key?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bucket_name?: string
+          catalog_id?: string
+          created_at?: string
+          id?: string
+          location?: string
+          name?: string
+          namespace_id?: string
+          remote_table_id?: string | null
+          shard_id?: string | null
+          shard_key?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "iceberg_tables_catalog_id_fkey"
+            columns: ["catalog_id"]
+            isOneToOne: false
+            referencedRelation: "buckets_analytics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "iceberg_tables_namespace_id_fkey"
+            columns: ["namespace_id"]
+            isOneToOne: false
+            referencedRelation: "iceberg_namespaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      migrations: {
+        Row: {
+          executed_at: string | null
+          hash: string
+          id: number
+          name: string
+        }
+        Insert: {
+          executed_at?: string | null
+          hash: string
+          id: number
+          name: string
+        }
+        Update: {
+          executed_at?: string | null
+          hash?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      objects: {
+        Row: {
+          bucket_id: string | null
+          created_at: string | null
+          id: string
+          last_accessed_at: string | null
+          metadata: Json | null
+          name: string | null
+          owner: string | null
+          owner_id: string | null
+          path_tokens: string[] | null
+          updated_at: string | null
+          user_metadata: Json | null
+          version: string | null
+        }
+        Insert: {
+          bucket_id?: string | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          name?: string | null
+          owner?: string | null
+          owner_id?: string | null
+          path_tokens?: string[] | null
+          updated_at?: string | null
+          user_metadata?: Json | null
+          version?: string | null
+        }
+        Update: {
+          bucket_id?: string | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          name?: string | null
+          owner?: string | null
+          owner_id?: string | null
+          path_tokens?: string[] | null
+          updated_at?: string | null
+          user_metadata?: Json | null
+          version?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "objects_bucketId_fkey"
+            columns: ["bucket_id"]
+            isOneToOne: false
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      s3_multipart_uploads: {
+        Row: {
+          bucket_id: string
+          created_at: string
+          id: string
+          in_progress_size: number
+          key: string
+          metadata: Json | null
+          owner_id: string | null
+          upload_signature: string
+          user_metadata: Json | null
+          version: string
+        }
+        Insert: {
+          bucket_id: string
+          created_at?: string
+          id: string
+          in_progress_size?: number
+          key: string
+          metadata?: Json | null
+          owner_id?: string | null
+          upload_signature: string
+          user_metadata?: Json | null
+          version: string
+        }
+        Update: {
+          bucket_id?: string
+          created_at?: string
+          id?: string
+          in_progress_size?: number
+          key?: string
+          metadata?: Json | null
+          owner_id?: string | null
+          upload_signature?: string
+          user_metadata?: Json | null
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey"
+            columns: ["bucket_id"]
+            isOneToOne: false
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      s3_multipart_uploads_parts: {
+        Row: {
+          bucket_id: string
+          created_at: string
+          etag: string
+          id: string
+          key: string
+          owner_id: string | null
+          part_number: number
+          size: number
+          upload_id: string
+          version: string
+        }
+        Insert: {
+          bucket_id: string
+          created_at?: string
+          etag: string
+          id?: string
+          key: string
+          owner_id?: string | null
+          part_number: number
+          size?: number
+          upload_id: string
+          version: string
+        }
+        Update: {
+          bucket_id?: string
+          created_at?: string
+          etag?: string
+          id?: string
+          key?: string
+          owner_id?: string | null
+          part_number?: number
+          size?: number
+          upload_id?: string
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey"
+            columns: ["bucket_id"]
+            isOneToOne: false
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "s3_multipart_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vector_indexes: {
+        Row: {
+          bucket_id: string
+          created_at: string
+          data_type: string
+          dimension: number
+          distance_metric: string
+          id: string
+          metadata_configuration: Json | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          bucket_id: string
+          created_at?: string
+          data_type: string
+          dimension: number
+          distance_metric: string
+          id?: string
+          metadata_configuration?: Json | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          bucket_id?: string
+          created_at?: string
+          data_type?: string
+          dimension?: number
+          distance_metric?: string
+          id?: string
+          metadata_configuration?: Json | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vector_indexes_bucket_id_fkey"
+            columns: ["bucket_id"]
+            isOneToOne: false
+            referencedRelation: "buckets_vectors"
             referencedColumns: ["id"]
           },
         ]
@@ -656,227 +1575,132 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      approve_join_request: {
-        Args: { p_request_id: string }
-        Returns: {
-          community_name: string
-          community_slug: string
-          member_email: string
-          member_name: string
-        }[]
-      }
-      check_join_request_rate_limit: {
-        Args: { request_email: string }
+      allow_any_operation: {
+        Args: { expected_operations: string[] }
         Returns: boolean
       }
-      check_steward_request_rate_limit: {
-        Args: { request_email: string }
+      allow_only_operation: {
+        Args: { expected_operation: string }
         Returns: boolean
       }
-      demote_steward_to_member: {
-        Args: { p_target_user_id: string }
+      can_insert_object: {
+        Args: { bucketid: string; metadata: Json; name: string; owner: string }
         Returns: undefined
       }
-      dismiss_join_request: {
-        Args: { p_request_id: string }
-        Returns: undefined
+      extension: { Args: { name: string }; Returns: string }
+      filename: { Args: { name: string }; Returns: string }
+      foldername: { Args: { name: string }; Returns: string[] }
+      get_common_prefix: {
+        Args: { p_delimiter: string; p_key: string; p_prefix: string }
+        Returns: string
       }
-      fulfill_item_request: {
-        Args: { p_request_id: string; p_supply_id: string }
-        Returns: {
-          community_slug: string
-          request_title: string
-        }[]
-      }
-      get_anonymous_pins: {
+      get_size_by_bucket: {
         Args: never
         Returns: {
-          lat: number
-          lng: number
+          bucket_id: string
+          size: number
         }[]
       }
-      get_books_with_owners: {
-        Args: { p_community_id?: string }
-        Returns: {
-          author: string
-          condition: string
-          created_at: string
-          genre: string
-          house_rules: string[]
-          id: string
-          lender_notes: string
-          lent_out: boolean
-          owner_id: string
-          owner_name: string
-          title: string
-          updated_at: string
-        }[]
-      }
-      get_community_public_stats: {
-        Args: { p_slug: string }
-        Returns: {
-          book_count: number
-          description: string
-          discoverable: boolean
-          id: string
-          join_mode: string
-          member_count: number
-          name: string
-          public_location_label: string
-          slug: string
-          supply_count: number
-        }[]
-      }
-      get_discoverable_communities: {
-        Args: never
-        Returns: {
-          join_mode: string
-          latitude: number
-          longitude: number
-          name: string
-          public_location_label: string
-          slug: string
-        }[]
-      }
-      get_intl_communities: {
-        Args: never
-        Returns: {
-          intl_label: string
-        }[]
-      }
-      get_item_requests: {
-        Args: { p_community_id: string }
-        Returns: {
-          category: string
-          created_at: string
-          fulfilled_at: string
-          fulfilled_supply_id: string
-          fulfilled_supply_name: string
-          id: string
-          note: string
-          requester_id: string
-          requester_name: string
-          status: string
-          title: string
-        }[]
-      }
-      get_my_community_location: {
-        Args: { p_community_id: string }
-        Returns: {
-          coarse_latitude: number
-          coarse_longitude: number
-          discoverable: boolean
-          join_mode: string
-          latitude: number
-          longitude: number
-          public_location_label: string
-          zip_code: string
-        }[]
-      }
-      get_public_illustrations:
-        | {
-            Args: never
-            Returns: {
-              illustration_url: string
-            }[]
-          }
-        | {
-            Args: { p_community_id?: string }
-            Returns: {
-              illustration_url: string
-            }[]
-          }
-      get_public_profile: {
-        Args: { profile_id: string }
-        Returns: {
-          id: string
-          name: string
-          vouched_at: string
-          zip_code: string
-        }[]
-      }
-      get_supplies_with_owners: {
-        Args: { p_community_id?: string }
-        Returns: {
-          category: string
-          condition: string
-          contact_email: string
-          created_at: string
-          cross_streets: string
-          date_available: string
-          description: string
-          house_rules: string[]
-          id: string
-          illustration_url: string
-          image_url: string
-          images: string[]
-          lender_notes: string
-          lent_out: boolean
-          location: string
-          name: string
-          neighborhood: string
-          owner_id: string
-          owner_name: string
-          owner_zip_code: string
-          party_types: string[]
-          thumb_url: string
-          updated_at: string
-        }[]
-      }
-      get_supply_owner_info: {
-        Args: { owner_id_param: string }
-        Returns: {
-          name: string
-          zip_code: string
-        }[]
-      }
-      get_user_community_id: { Args: { p_user_id: string }; Returns: string }
-      get_user_community_slug: { Args: { p_user_id: string }; Returns: string }
-      has_role: {
+      list_multipart_uploads_with_delimiter: {
         Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
+          bucket_id: string
+          delimiter_param: string
+          max_keys?: number
+          next_key_token?: string
+          next_upload_token?: string
+          prefix_param: string
         }
-        Returns: boolean
+        Returns: {
+          created_at: string
+          id: string
+          key: string
+        }[]
       }
-      is_founding_steward: {
-        Args: { _community_id: string; _user_id: string }
-        Returns: boolean
+      list_objects_with_delimiter: {
+        Args: {
+          _bucket_id: string
+          delimiter_param: string
+          max_keys?: number
+          next_token?: string
+          prefix_param: string
+          sort_order?: string
+          start_after?: string
+        }
+        Returns: {
+          created_at: string
+          id: string
+          last_accessed_at: string
+          metadata: Json
+          name: string
+          updated_at: string
+        }[]
       }
-      is_steward_of: {
-        Args: { _community_id: string; _user_id: string }
-        Returns: boolean
+      operation: { Args: never; Returns: string }
+      search: {
+        Args: {
+          bucketname: string
+          levels?: number
+          limits?: number
+          offsets?: number
+          prefix: string
+          search?: string
+          sortcolumn?: string
+          sortorder?: string
+        }
+        Returns: {
+          created_at: string
+          id: string
+          last_accessed_at: string
+          metadata: Json
+          name: string
+          updated_at: string
+        }[]
       }
-      is_user_steward: { Args: { user_id: string }; Returns: boolean }
-      is_user_vouched: { Args: { user_id: string }; Returns: boolean }
-      promote_member_to_steward: {
-        Args: { p_target_user_id: string }
-        Returns: undefined
+      search_by_timestamp: {
+        Args: {
+          p_bucket_id: string
+          p_level: number
+          p_limit: number
+          p_prefix: string
+          p_sort_column: string
+          p_sort_column_after: string
+          p_sort_order: string
+          p_start_after: string
+        }
+        Returns: {
+          created_at: string
+          id: string
+          key: string
+          last_accessed_at: string
+          metadata: Json
+          name: string
+          updated_at: string
+        }[]
       }
-      reject_join_request: {
-        Args: { p_request_id: string }
-        Returns: undefined
-      }
-      search_supplies_public:
-        | { Args: { search_query: string }; Returns: number }
-        | {
-            Args: { p_community_id?: string; search_query: string }
-            Returns: number
-          }
-      switch_user_community: {
-        Args: { p_community_id: string }
-        Returns: undefined
-      }
-      user_in_community: {
-        Args: { p_community_id: string; p_user_id: string }
-        Returns: boolean
+      search_v2: {
+        Args: {
+          bucket_name: string
+          levels?: number
+          limits?: number
+          prefix: string
+          sort_column?: string
+          sort_column_after?: string
+          sort_order?: string
+          start_after?: string
+        }
+        Returns: {
+          created_at: string
+          id: string
+          key: string
+          last_accessed_at: string
+          metadata: Json
+          name: string
+          updated_at: string
+        }[]
       }
     }
     Enums: {
-      app_role: "member" | "steward"
-      join_request_status: "pending" | "vouched" | "rejected" | "approved"
-      membership_status: "pending" | "active" | "deactivated" | "rejected"
-      user_role: "member" | "steward"
+      buckettype: "STANDARD" | "ANALYTICS" | "VECTOR"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1002,12 +1826,29 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
-      app_role: ["member", "steward"],
-      join_request_status: ["pending", "vouched", "rejected", "approved"],
-      membership_status: ["pending", "active", "deactivated", "rejected"],
-      user_role: ["member", "steward"],
+      app_role: ["member", "steward", "custodian"],
+      community_join_mode: ["approval_required"],
+      gear_loan_status: [
+        "pending",
+        "approved",
+        "checked_out",
+        "returned",
+        "declined",
+        "cancelled",
+      ],
+      listing_status: ["listed", "unlisted", "retired"],
+      membership_status: ["pending", "active", "rejected", "deactivated"],
+      ownership_kind: ["individual", "group"],
+    },
+  },
+  storage: {
+    Enums: {
+      buckettype: ["STANDARD", "ANALYTICS", "VECTOR"],
     },
   },
 } as const

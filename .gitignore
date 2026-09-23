@@ -11,7 +11,14 @@ node_modules
 dist
 dist-ssr
 *.local
+*.tsbuildinfo
 .env
+.env.*
+!.env.example
+
+# Local Supabase CLI state
+supabase/.branches/
+supabase/.temp/
 
 # Editor directories and files
 .vscode/*

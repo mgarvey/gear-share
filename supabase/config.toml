@@ -1,52 +1,62 @@
-project_id = "mbmmfgivhqzhjyneyelu"
+project_id = "community-gear-lending"
 
-[functions.bulk-create-users]
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[studio]
+enabled = true
+port = 54323
+
+[local_smtp]
+enabled = false
+
+[storage]
+enabled = true
+file_size_limit = "10MiB"
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:8080"
+additional_redirect_urls = ["http://127.0.0.1:8080"]
+enable_signup = true
+enable_anonymous_sign_ins = false
+minimum_password_length = 12
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+
+[edge_runtime]
+enabled = true
+
+[functions.sanitize-gear-image]
 verify_jwt = true
 
-[functions.send-contact-message]
-verify_jwt = false
-
-[functions.generate-illustration]
+[functions.draft-gear-listing]
 verify_jwt = true
 
-[functions.batch-generate-illustrations]
+[functions.deliver-transactional-notifications]
+verify_jwt = false
+
+[functions.receive-ses-feedback]
+verify_jwt = false
+
+[functions.invite-preapproved-member]
 verify_jwt = true
 
-[functions.draft-item-from-image]
-verify_jwt = true
-
-[functions.get-app-icon]
-verify_jwt = false
-
-[functions.send-join-notification]
-verify_jwt = false
-
-[functions.send-supply-notification]
-verify_jwt = true
-
-[functions.scan-bookshelf]
-verify_jwt = true
-
-[functions.send-bulk-update]
-verify_jwt = true
-
-[functions.send-community-request-notification]
-verify_jwt = false
-
-[functions.search-public-catalog]
-verify_jwt = false
-
-[functions.cross-community-search]
-verify_jwt = false
-
-[functions.send-bulk-supply-notification]
-verify_jwt = false
-
-[functions.create-community]
-verify_jwt = false
-
-[functions.send-welcome-email]
-verify_jwt = false
-
-[functions.send-request-fulfilled]
+[functions.delete-deactivated-member]
 verify_jwt = true

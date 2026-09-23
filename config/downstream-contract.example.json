@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "publicRelease": {
+    "tag": "gear-share-v1.0.0",
+    "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "privateOverlay": {
+    "paths": [
+      "config/private/**",
+      "public/brand/private/**",
+      "docs/operations/**",
+      "docs/evidence/**"
+    ],
+    "valueClasses": [
+      "community-presentation",
+      "authorized-artwork",
+      "public-origin-and-routing",
+      "runtime-provider-reference",
+      "private-operations-and-evidence",
+      "consumed-public-release"
+    ]
+  },
+  "temporaryHotfixes": []
+}

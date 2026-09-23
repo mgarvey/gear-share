@@ -1,1 +1,0 @@
-GRANT SELECT (custom_join_question) ON TABLE public.communities TO anon;

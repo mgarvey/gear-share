@@ -1,1 +1,0 @@
-ALTER TABLE public.communities ALTER COLUMN join_mode SET DEFAULT 'approval_required';
